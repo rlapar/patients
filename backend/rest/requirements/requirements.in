@@ -1,0 +1,13 @@
+colorama
+connexion
+flask
+iso8601 # rfc3339 str to datetime
+marshmallow-sqlalchemy
+marshmallow
+psycopg2==2.7.5
+requests
+serverless-wsgi
+strict-rfc3339 # correct validation of date-time
+structlog[dev]
+structlog-pretty
+swagger_ui_bundle # remove with custom UI
