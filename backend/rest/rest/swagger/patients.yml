@@ -1,0 +1,225 @@
+openapi: 3.0.0
+info:
+  title: patients REST api
+  description: This is sample description
+  contact:
+    name: radovan.lapar
+    email: laparradovan@gmail.com
+  version: 1.0.0
+servers:
+  - url: '{{ schema }}://{{ host }}/rest/'
+paths:
+  /ping:
+    get:
+      operationId: rest.api.health.ping
+      summary: Return a simple JSON payload for health check purposes
+      tags:
+        - healthcheck
+      responses:
+        "200":
+          description: Health check successful
+# -- DISEASES --
+  /diseases/create:
+    post:
+      operationId: rest.api.diseases.create.handle_request
+      description: |
+        Create new `Disease` object.
+      tags:
+        - diseases
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DiseaseCreateRequest"
+        description: Incoming disease object properties
+        required: true
+      responses:
+        "201":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Disease"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/diseases/{disease_id}":
+    get:
+      operationId: rest.api.diseases.get.handle_request
+      description: |
+        Get disease with given id.
+      tags:
+        - diseases
+      parameters:
+        - name: disease_id
+          in: path
+          description: disease id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Disease"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+# -- PATIENTS ---
+  /patients/create:
+    post:
+      operationId: rest.api.patients.create.handle_request
+      description: |
+        Create new `Patient` object.
+      tags:
+        - patients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatientCreateRequest"
+        description: Incoming patient object properties
+        required: true
+      responses:
+        "201":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Patient"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/patients/{patient_id}":
+    get:
+      operationId: rest.api.patients.get.handle_request
+      description: |
+        Get patient with given id.
+      tags:
+        - patients
+      parameters:
+        - name: patient_id
+          in: path
+          description: patient id
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Patient"
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      title: Error
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: integer
+        description:
+          type: string
+
+# -- DISEASES --
+    DiseaseCreateRequest:
+      type: object
+      required:
+        - name
+        - international_code
+      properties:
+        name:
+          type: string
+          description: Disease name
+        international_code:
+          type: string
+          description: Disease code
+
+    Disease:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Disease name
+        international_code:
+          type: string
+          description: Disease code
+
+# -- PATIENTS --
+    PatientCreateRequest:
+      type: object
+      required:
+        - name
+        - surname
+        - birthday
+      properties:
+        name:
+          type: string
+          description: Patient name
+        surname:
+          type: string
+          description: Patient surname
+        birthday:
+          type: string
+          format: date-time
+          description: date-time of birth in format according to RFC3339
+          example: 2017-07-21T00:00:00Z
+        deceased:
+          type: boolean
+          description: Is patient deceased
+          default: false
+    Patient:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: patient ID
+          minimum: 1
+        name:
+          type: string
+          description: Patient name
+        surname:
+          type: string
+          description: Patient surname
+        birthday:
+          type: string
+          format: date-time
+          description: date-time of birth in format according to RFC3339
+          example: 2017-07-21T00:00:00Z
+        deceased:
+          type: boolean
+          description: Is patient deceased
+        segments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Disease"
+
+
+
+
+

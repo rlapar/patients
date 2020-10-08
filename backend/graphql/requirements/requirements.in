@@ -1,0 +1,11 @@
+colorama
+flask
+flask-graphql
+graphene
+graphene_sqlalchemy
+jsonschema==2.6.0
+psycopg2==2.7.7
+serverless-wsgi
+structlog[dev]
+structlog-pretty
+
