@@ -1,6 +1,7 @@
 colorama
 connexion
 flask
+gevent
 iso8601 # rfc3339 str to datetime
 marshmallow-sqlalchemy
 marshmallow
