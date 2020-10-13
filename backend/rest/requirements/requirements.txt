@@ -22,12 +22,13 @@ coverage==4.5.3           # via structlog
 docutils==0.14            # via sphinx
 flask==1.0.3
 freezegun==0.3.12         # via structlog
+gevent==20.9.0
+greenlet==0.4.17          # via gevent
 hyperlink==19.0.0         # via twisted
 identify==1.4.3           # via pre-commit
 idna==2.8                 # via hyperlink, requests
 imagesize==1.1.0          # via sphinx
 importlib-metadata==0.17  # via pluggy, pre-commit, pytest
-importlib-resources==1.0.2  # via pre-commit
 incremental==17.5.0       # via twisted
 inflection==0.3.1         # via connexion
 iso8601==0.1.12
@@ -78,4 +79,8 @@ virtualenv==16.6.0        # via pre-commit
 wcwidth==0.1.7            # via pytest
 werkzeug==0.15.4          # via flask, serverless-wsgi
 zipp==0.5.1               # via importlib-metadata
-zope.interface==4.6.0     # via twisted
+zope.event==4.5.0         # via gevent
+zope.interface==4.6.0     # via gevent, twisted
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools==50.3.0        # via gevent, pyhamcrest, sphinx, zope.event, zope.interface

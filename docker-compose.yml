@@ -1,0 +1,45 @@
+version: '3'
+services:
+  db:
+    image: "postgres:11"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: admin
+    ports:
+      - "5433:5432"
+    networks:
+      - backend
+  inital_migration:
+    build:
+      context: .
+      dockerfile: scripts/initial_migration/Dockerfile
+      args:
+        - DB_URL=${DB_URL}
+    depends_on: 
+      - db
+    networks: 
+      - backend
+    links:
+      - "db:postgres"
+    environment:
+      - DB_URL=postgresql://admin:admin@postgres:5432/admin
+  backend:
+    build:
+      context: .
+      dockerfile: backend/rest/Dockerfile
+    depends_on: 
+      - db
+      - inital_migration
+    networks:
+      - backend
+    ports:
+      - "8081:8081"
+    links:
+      - "db:postgres"
+    environment:
+      - DB_URL=postgresql://admin:admin@postgres:5432/admin
+      - BASIC_AUTH_USERNAME=admin
+      - BASIC_AUTH_PASSWORD=admin
+networks:
+  backend:
