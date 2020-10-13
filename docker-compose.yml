@@ -7,8 +7,32 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: admin
     ports:
-      - "5432:5432"
+      - "5433:5432"
     networks:
       - backend
+  inital_migration:
+    build:
+      context: .
+      dockerfile: scripts/initial_migration/Dockerfile
+      args:
+        - DB_URL=${DB_URL}
+    depends_on: 
+      - db
+    networks: 
+      - backend
+    links:
+      - "db:postgres"
+    environment:
+      - DB_URL=postgresql://admin:admin@postgres:5432/admin
+#   backend:
+#     build:
+#       context: .
+#       dockerfile: backend/rest/Dockerfile
+#     depends_on: 
+#       - db
+#     networks:
+#       - backend
+#     links:
+#       - "db:postgres"
 networks:
   backend:
